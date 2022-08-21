@@ -19,7 +19,7 @@ type API struct {
 func NewAPI(userRepository repository.UserRepository, productRepository repository.ProductRepository, cartRepository repository.CartRepository) API {
 	gin := gin.Default()
 
-	// gin.Use(CORSMiddleware())
+	gin.Use(CORSMiddleware())
 
 	api := API{
 		userRepository, productRepository, cartRepository, gin,
