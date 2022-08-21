@@ -19,7 +19,8 @@ type MyCustomClaims struct {
 func CORSMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//menentukan domain apa saja yg boleh mengakses data/aplikiasi ini
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+		// c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "https://git.heroku.com/dry-sea-27794.git")
 		//method apa saja yang boleh diakses
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, PATCH")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "*")
