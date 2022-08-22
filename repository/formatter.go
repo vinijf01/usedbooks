@@ -27,6 +27,7 @@ type LoginResponse struct {
 ///////
 
 type ProductResponse struct {
+	ID_Product  int    `json:"id_product"`
 	ID_User     int    `json:"id_user"`
 	Image       string `json:"image"`
 	Title       string `json:"title"`
@@ -37,6 +38,7 @@ type ProductResponse struct {
 
 func FormatProduct(h Products) ProductResponse {
 	return ProductResponse{
+		ID_Product:  h.ID_Product,
 		ID_User:     h.ID_User,
 		Image:       h.Image,
 		Title:       h.Title,
