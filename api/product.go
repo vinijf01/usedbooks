@@ -27,9 +27,9 @@ func (api *API) GetProducts(c *gin.Context) {
 
 		productsResponse = append(productsResponse, productResponse)
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": productsResponse,
-	})
+
+	response := helper.APIResponse("Success Get List products", http.StatusOK, "success", productsResponse)
+	c.JSON(http.StatusOK, response)
 }
 
 func (api *API) GetProductByID(c *gin.Context) {
