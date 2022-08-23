@@ -19,6 +19,16 @@ func NewCartRepository(db *sql.DB) *CartRepository {
 	return &CartRepository{db: db}
 }
 
+func (c *CartRepository) DeleteCart(id_cart int, id_user int) (bool, error) {
+	sqlStatement := `DELETE from carts WHERE id_cart = ? AND id_user = ?`
+
+	_, err := c.db.Exec(sqlStatement, id_cart, id_user)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+
 func (c *CartRepository) InsertCart(inputCart CartForm) (Carts, error) {
 	sqlStatement := `INSERT INTO carts (id_product, id_user) VALUES (?,?)`
 
@@ -69,14 +79,4 @@ func (c *CartRepository) FetchCartByIdUser(id_user int) ([]Cartlist, error) {
 		carts = append(carts, cart)
 	}
 	return carts, nil
-}
-
-func (c *CartRepository) DeleteCart(id_cart int, id_user int) (bool, error) {
-	sqlStatement := `DELETE from carts WHERE id_cart = ? AND id_user = ?`
-
-	_, err := c.db.Exec(sqlStatement, id_cart, id_user)
-	if err != nil {
-		return false, err
-	}
-	return true, nil
 }

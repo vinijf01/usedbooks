@@ -27,6 +27,23 @@ func NewUserRepository(db *sql.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
 
+func (u *UserRepository) InsertUser(name string, email string, phone string, password string, role string) (*string, error) {
+	users, err := u.FetchUsers()
+
+	for _, value := range users {
+		if value.Email == email {
+			return nil, err
+		}
+	}
+
+	_, err = u.db.Exec("INSERT INTO users (name, email, phone, password, role) VALUES (?,?,?,?,?)", name, email, phone, password, role)
+
+	if err != nil {
+		return nil, err
+	}
+	return &email, err
+}
+
 func (u *UserRepository) FetchUsers() ([]Users, error) {
 	var users []Users
 
@@ -55,23 +72,6 @@ func (u *UserRepository) FetchUsers() ([]Users, error) {
 		users = append(users, user)
 	}
 	return users, nil
-}
-
-func (u *UserRepository) InsertUser(name string, email string, phone string, password string, role string) (*string, error) {
-	users, err := u.FetchUsers()
-
-	for _, value := range users {
-		if value.Email == email {
-			return nil, err
-		}
-	}
-
-	_, err = u.db.Exec("INSERT INTO users (name, email, phone, password, role) VALUES (?,?,?,?,?)", name, email, phone, password, role)
-
-	if err != nil {
-		return nil, err
-	}
-	return &email, err
 }
 
 func (u *UserRepository) LoginUser(input UserLogin) (Users, error) {

@@ -10,19 +10,20 @@ import (
 )
 
 type API struct {
-	userRepository    repository.UserRepository
-	productRepository repository.ProductRepository
-	cartRepository    repository.CartRepository
-	gin               *gin.Engine
+	userRepository     repository.UserRepository
+	productRepository  repository.ProductRepository
+	cartRepository     repository.CartRepository
+	wishlistRepository repository.WishlistRepository
+	gin                *gin.Engine
 }
 
-func NewAPI(userRepository repository.UserRepository, productRepository repository.ProductRepository, cartRepository repository.CartRepository) API {
+func NewAPI(userRepository repository.UserRepository, productRepository repository.ProductRepository, cartRepository repository.CartRepository, wishlistRepository repository.WishlistRepository) API {
 	gin := gin.Default()
 
 	gin.Use(CORSMiddleware())
 
 	api := API{
-		userRepository, productRepository, cartRepository, gin,
+		userRepository, productRepository, cartRepository, wishlistRepository, gin,
 	}
 
 	v1 := gin.Group("/api/v1")
@@ -49,6 +50,9 @@ func NewAPI(userRepository repository.UserRepository, productRepository reposito
 	v1.DELETE("/cart/delete/:id", api.DELETE(api.AuthMiddleware(api.BuyerMiddlerware(api.DeleteCarts))))
 
 	//wishlist
+	v1.POST("/wishlist/add/:id", api.POST(api.AuthMiddleware(api.BuyerMiddlerware(api.AddWishlist))))
+	v1.GET("/wishlist/list", api.GET(api.AuthMiddleware(api.BuyerMiddlerware(api.GetWishlist))))
+	v1.DELETE("/wishlist/delete/:id", api.DELETE(api.AuthMiddleware(api.BuyerMiddlerware(api.DeleteWishlist))))
 
 	return api
 }

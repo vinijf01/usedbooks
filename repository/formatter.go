@@ -24,8 +24,6 @@ type LoginResponse struct {
 	ExpiresAt time.Time `json:"expires_at"`
 }
 
-///////
-
 type ProductResponse struct {
 	ID_Product  int    `json:"id_product"`
 	ID_User     int    `json:"id_user"`
@@ -78,6 +76,15 @@ func FormatCartList(h Cartlist) Cartlist {
 		Writer:     h.Writer,
 		Price:      h.Price,
 	}
+}
+
+type Wishlist struct {
+	ID_Wishlist int    `json:"id_wishlist"`
+	ID_Product  int    `json:"id_product"`
+	Image       string `json:"image"`
+	Title       string `json:"title"`
+	Writer      string `json:"writer"`
+	Price       int    `json:"price"`
 }
 
 type WishlistResponse struct {

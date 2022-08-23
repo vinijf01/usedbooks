@@ -12,7 +12,6 @@ type ProductRepo interface {
 	UpdateProduct(product ProductFromUpdate) (Products, error)
 	DeleteProduct(id int) (bool, error)
 	FetchNameImgProductId(id int) (*string, error)
-	// UpdateProduct(id_product int, id_user int, image string, title string, writer string, price int, description string) (bool, error)
 }
 
 type ProductRepository struct {
@@ -21,6 +20,16 @@ type ProductRepository struct {
 
 func NewProductRepository(db *sql.DB) *ProductRepository {
 	return &ProductRepository{db: db}
+}
+
+func (p *ProductRepository) DeleteProduct(id int) (bool, error) {
+	sqlStatement := `DELETE from products WHERE id_product = ?`
+
+	_, err := p.db.Exec(sqlStatement, id)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 func (p *ProductRepository) FetchProducts() ([]Products, error) {
@@ -146,16 +155,6 @@ func (p *ProductRepository) UpdateProduct(product ProductFromUpdate) (Products, 
 		return Products{}, err
 	}
 	return newProduct, nil
-}
-
-func (p *ProductRepository) DeleteProduct(id int) (bool, error) {
-	sqlStatement := `DELETE from products WHERE id_product = ?`
-
-	_, err := p.db.Exec(sqlStatement, id)
-	if err != nil {
-		return false, err
-	}
-	return true, nil
 }
 
 func (p *ProductRepository) FetchNameImgProductId(id int) (*string, error) {
